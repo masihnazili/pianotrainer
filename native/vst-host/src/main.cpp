@@ -165,7 +165,7 @@ private:
         }
 
         Array<var> items;
-        for (auto d : knownPlugins.getTypes()) {
+        for (const PluginDescription* d : knownPlugins.getTypes()) {
             DynamicObject::Ptr item(new DynamicObject());
             item->setProperty("name", d->name);
             item->setProperty("manufacturer", d->manufacturerName);
@@ -184,7 +184,7 @@ private:
     void loadPlugin(const String& file, const String& requestId) {
         PluginDescription selected;
         bool found = false;
-        for (auto d : knownPlugins.getTypes()) {
+        for (const PluginDescription* d : knownPlugins.getTypes()) {
             if (d->fileOrIdentifier == file || d->createIdentifierString() == file) {
                 selected = *d; found = true; break;
             }
