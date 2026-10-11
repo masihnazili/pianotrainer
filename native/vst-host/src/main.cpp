@@ -165,14 +165,15 @@ private:
         }
 
         Array<var> items;
-        for (const PluginDescription* d : knownPlugins.getTypes()) {
+        const auto pluginTypes = knownPlugins.getTypes();
+        for (const PluginDescription& d : pluginTypes) {
             DynamicObject::Ptr item(new DynamicObject());
-            item->setProperty("name", d->name);
-            item->setProperty("manufacturer", d->manufacturerName);
-            item->setProperty("format", d->pluginFormatName);
-            item->setProperty("file", d->fileOrIdentifier);
-            item->setProperty("identifier", d->createIdentifierString());
-            item->setProperty("instrument", d->isInstrument);
+            item->setProperty("name", d.name);
+            item->setProperty("manufacturer", d.manufacturerName);
+            item->setProperty("format", d.pluginFormatName);
+            item->setProperty("file", d.fileOrIdentifier);
+            item->setProperty("identifier", d.createIdentifierString());
+            item->setProperty("instrument", d.isInstrument);
             items.add(var(item.get()));
         }
         DynamicObject::Ptr out(new DynamicObject());
@@ -184,9 +185,12 @@ private:
     void loadPlugin(const String& file, const String& requestId) {
         PluginDescription selected;
         bool found = false;
-        for (const PluginDescription* d : knownPlugins.getTypes()) {
-            if (d->fileOrIdentifier == file || d->createIdentifierString() == file) {
-                selected = *d; found = true; break;
+        const auto pluginTypes = knownPlugins.getTypes();
+        for (const PluginDescription& d : pluginTypes) {
+            if (d.fileOrIdentifier == file || d.createIdentifierString() == file) {
+                selected = d;
+                found = true;
+                break;
             }
         }
         if (!found) { replyError(requestId, "Plugin not found in the latest scan. Scan again and choose a VST3 instrument."); return; }
