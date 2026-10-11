@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>آموزش پیانو</title>
+  <link rel="stylesheet" href="css/app.css">
+</head>
+<body>
+  <div class="app">
+    <header class="topbar">
+      <div class="brand-block"><div class="brand"><span class="brand-mark">♬</span><span>PIANO STUDIO</span></div><div class="brand-subtitle">مسیر شخصی یادگیری پیانو</div></div>
+      <div class="device" id="device">
+        <span class="dot" id="device-dot"></span>
+        <span id="device-label">کنترلر MIDI: متصل نیست</span>
+        <select id="midi-select" hidden aria-label="انتخاب کنترلر"></select>
+        <button class="btn small" id="btn-midi" type="button">اتصال کنترلر</button>
+        <button class="btn small" id="btn-mic" type="button">🎙️ استفاده از میکروفون</button>
+        <button class="btn small" id="btn-progress" type="button">📊 پیشرفت من</button>
+        <button class="btn small" id="btn-sound-settings" type="button" aria-expanded="false">🎹 صدای پیانو</button>
+      </div>
+    </header>
+
+    <nav class="sidebar" id="sidebar" aria-label="فهرست درس‌ها"></nav>
+
+    <main class="main" id="main">
+      <div class="banner error" id="banner" hidden></div>
+      <section class="card sound-settings" id="sound-settings" hidden aria-label="تنظیمات صدای پیانو">
+        <div class="sound-settings-head"><div><h2>تنظیمات صدای پیانو</h2><p class="muted">صدای سنتزشده همیشه در دسترس است؛ برای صدای طبیعی‌تر می‌توانی نمونه‌های WAV خودت را بارگذاری کنی.</p></div><button class="btn small" id="btn-close-sound" type="button">بستن</button></div>
+        <div class="sound-settings-grid">
+          <label class="ctl">موتور صدا
+            <select id="sound-engine"><option value="synth">پیانوی سنتزشده (پیش‌فرض)</option><option value="samples">پیانوی سمپل‌شده (WAV)</option><option value="vst3">پلاگین VST3 نصب‌شده</option></select>
+          </label>
+          <label class="ctl sample-file-label">بارگذاری نمونه‌های پیانو
+            <input id="sample-files" type="file" accept="audio/wav,.wav" multiple>
+          </label>
+        </div>
+        <div class="vst-controls" id="vst-controls" hidden>
+          <label class="ctl">پلاگین VST3 نصب‌شده
+            <select id="vst-plugin-select"><option value="">ابتدا اسکن کن…</option></select>
+          </label>
+          <div class="vst-buttons"><button class="btn" id="btn-vst-scan" type="button">🔎 اسکن پلاگین‌ها</button><button class="btn primary" id="btn-vst-load" type="button">بارگذاری پلاگین</button><button class="btn" id="btn-vst-test" type="button" disabled>▶ تست صدا</button></div>
+          <p class="muted" id="vst-status" role="status">میزبان Native هنوز اجرا نشده است.</p>
+        </div>
+        <p id="sound-status" class="sound-status" role="status">برای صدای سمپل‌شده، فایل‌های WAV را انتخاب کن؛ نام هر فایل باید شمارهٔ MIDI (مثلاً 60.wav) یا نام نت (مثلاً C4.wav) باشد.</p>
+        <div class="sound-settings-actions"><button class="btn" id="btn-clear-samples" type="button">پاک‌کردن بانک سمپل</button><span class="muted small-note">فایل‌ها فقط در همین اجرای برنامه نگه داشته می‌شوند؛ برای رعایت مجوز، بانک صدا را خودت انتخاب کن.</span></div>
+        <div class="vst-note"><strong>نکته:</strong> پلاگین‌های ساز (Instrument) را انتخاب کن؛ افکت‌های صوتی به‌تنهایی صدای پیانو تولید نمی‌کنند. برای استفاده از این بخش، ابتدا میزبان Native را بساز.</div>
+      </section>
+      <section class="card progress-dashboard" id="progress-dashboard" hidden aria-label="گزارش پیشرفت"></section>
+
+      <section class="card" id="step-card">
+        <h1 id="step-title"></h1>
+        <p class="instructions" id="step-instructions"></p>
+        <div class="text-body" id="text-body" hidden></div>
+
+        <div class="modes" id="modes" role="tablist" hidden>
+          <button type="button" class="mode" data-mode="listen" role="tab">👂 گوش‌دادن</button>
+          <button type="button" class="mode" data-mode="wait" role="tab">🎯 تمرین: منتظر نت</button>
+          <button type="button" class="mode" data-mode="rhythm" role="tab">🥁 تمرین: با ضرب</button>
+        </div>
+        <p class="mode-help" id="mode-help"></p>
+
+        <div class="score-wrap" id="score-wrap" dir="ltr" hidden>
+          <div id="score"></div>
+          <div class="countin" id="countin" hidden></div>
+        </div>
+
+        <div class="controls" id="controls" hidden>
+          <button class="btn primary" id="btn-play" type="button">▶ پخش</button>
+          <label class="ctl" id="ctl-tempo">تمپو
+            <input id="tempo" type="range" min="40" max="140" step="1" value="72">
+            <output id="tempo-out">۷۲ ضرب/دقیقه</output>
+          </label>
+          <label class="ctl" id="ctl-hands">پخش
+            <select id="hands">
+              <option value="both">هر دو دست</option>
+              <option value="rh">فقط دست راست</option>
+              <option value="lh">فقط دست چپ</option>
+            </select>
+          </label>
+          <label class="ctl check" id="ctl-metro"><input id="metronome" type="checkbox" checked> مترونوم</label>
+          <label class="ctl check" id="ctl-countin"><input id="countin-on" type="checkbox" checked> شمارش اولیه</label>
+        </div>
+
+        <div class="controls options" id="practice-opts" hidden>
+          <label class="ctl check"><input id="opt-hint" type="checkbox" checked> نمایش کلیدهای هدف</label>
+          <label class="ctl check" id="ctl-local"><input id="opt-local" type="checkbox" checked> صدای برنامه برای کنترلر</label>
+          <label class="ctl" id="ctl-latency">جبران تأخیر
+            <input id="opt-latency" type="range" min="-150" max="150" step="5" value="0">
+            <output id="latency-out">۰ میلی‌ثانیه</output>
+          </label>
+        </div>
+
+        <div class="result" id="result" hidden></div>
+      </section>
+
+      <section class="keyboard-wrap" dir="ltr" aria-label="کیبورد پیانو">
+        <div id="keyboard"></div>
+      </section>
+
+      <div class="pager">
+        <button class="btn" id="btn-prev" type="button">→ قبلی</button>
+        <span id="pager-pos"></span>
+        <button class="btn" id="btn-next" type="button">بعدی ←</button>
+      </div>
+    </main>
+  </div>
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>

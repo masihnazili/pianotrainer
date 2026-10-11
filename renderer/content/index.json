@@ -1,0 +1,29 @@
+{
+  "units": [
+    {
+      "id": "u1",
+      "title": "مسیر کامل کتاب — سطح یک",
+      "lessons": [
+        "unit-01/intro.json",
+        "unit-01/c-position.json",
+        "unit-01/rhythm-staff.json",
+        "unit-01/intervals-chords.json",
+        "unit-02/g-position-chords.json",
+        "unit-02/middle-c-position.json",
+        "unit-02/expanding-five-finger.json",
+        "unit-02/c-major-scale-chords.json",
+        "unit-02/g-major-scale-chords.json",
+        "unit-02/f-major-scale-chords.json",
+        "unit-02/a-minor-scale-chords.json",
+        "unit-02/d-minor-final-review.json"
+      ]
+    },
+    {
+      "id": "dev",
+      "title": "ابزار توسعه",
+      "lessons": [
+        "dev/playground.json"
+      ]
+    }
+  ]
+}

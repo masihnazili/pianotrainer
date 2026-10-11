@@ -1,0 +1,100 @@
+{
+ "id": "dev-playground",
+ "unit": "dev",
+ "title": "Notation playground",
+ "titleFa": "نمایشگاه نت‌نویسی (فنی)",
+ "steps": [
+  {
+   "type": "exercise",
+   "id": "p1",
+   "title": "آکورد، ایست، هشتایی، تکرار",
+   "hands": [
+    "rh",
+    "lh"
+   ],
+   "tempo": 80,
+   "score": {
+    "timeSignature": "4/4",
+    "keySignature": "C",
+    "ending": "repeat",
+    "chordSymbols": {
+     "0": "C",
+     "1": "G7"
+    },
+    "dynamics": {
+     "2": "f"
+    },
+    "staves": {
+     "rh": [
+      "C4/q:1 D4/q:2 E4/q:3 F4/q:4",
+      "G4/h:5 r/q r/q",
+      "E4/e:3 F4/e:4 G4/e:5 A4/e:1 G4/q B4/q",
+      "C5/w:1"
+     ],
+     "lh": [
+      "C3+E3+G3/w:5-3-1",
+      "G2+B2+F3/h:5-3-1 r/h",
+      "C3/q:5 D3/q:4 E3/q:3 A3/q:1",
+      "C4/w:1"
+     ]
+    }
+   }
+  },
+  {
+   "type": "exercise",
+   "id": "p2",
+   "title": "سل ماژور، نقطه‌دار، علامت‌ها",
+   "hands": [
+    "rh",
+    "lh"
+   ],
+   "tempo": 80,
+   "score": {
+    "timeSignature": "3/4",
+    "keySignature": "G",
+    "staves": {
+     "rh": [
+      "G4/q:1@Lo F#4/q:2@ve E4/q:3@some",
+      "D5/h.:5@one",
+      "F4/q:4@nat F#4/q:4 A5/q",
+      "G4/h.@x"
+     ],
+     "lh": [
+      "r/h.",
+      "G2/q:5 D3/q:1 B3/q:3",
+      "F#3+A3/h.:2-1",
+      "r/h."
+     ]
+    }
+   }
+  },
+  {
+   "type": "exercise",
+   "id": "p3",
+   "title": "فا ماژور، بمل",
+   "hands": [
+    "rh",
+    "lh"
+   ],
+   "tempo": 80,
+   "score": {
+    "timeSignature": "4/4",
+    "keySignature": "F",
+    "staves": {
+     "rh": [
+      "F4/q:1 Bb4/q:4 C5/h:5",
+      "C5/e:5 D5/e:4 Bb4/q:3 A4/q:2 G4/q:1",
+      "B4/q:5 r/q r/h",
+      "G4/w"
+     ],
+     "lh": [
+      "F2/q:5 A2/q:3 C3/q:1 r/q",
+      "r/w",
+      "r/w",
+      "C3+E3+G3/w"
+     ]
+    }
+   }
+  }
+ ]
+}

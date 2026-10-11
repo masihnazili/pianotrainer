@@ -1,0 +1,57 @@
+{
+  "name": "piano-trainer",
+  "version": "0.11.0",
+  "description": "Piano Trainer — Windows installer packaging and VST3 host build pipeline",
+  "private": true,
+  "type": "module",
+  "main": "electron/main.cjs",
+  "scripts": {
+    "start": "electron .",
+    "dev:web": "node scripts/dev-server.mjs",
+    "test": "node --test \"tests/*.test.mjs\"",
+    "dist:win": "electron-builder --win nsis --x64"
+  },
+  "devDependencies": {
+    "electron": "^32.2.0",
+    "electron-builder": "^25.1.8"
+  },
+  "build": {
+    "appId": "com.pianotrainer.desktop",
+    "productName": "Piano Trainer",
+    "asar": true,
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "renderer/**/*",
+      "electron/**/*",
+      "package.json",
+      "README.md",
+      "docs/**/*"
+    ],
+    "extraResources": [
+      {
+        "from": "native/vst-host/build/Release/PianoVstHost.exe",
+        "to": "native/vst-host/PianoVstHost.exe"
+      }
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "artifactName": "Piano-Trainer-Setup-${version}-x64.${ext}"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "Piano Trainer"
+    }
+  }
+}
