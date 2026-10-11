@@ -1,5 +1,4 @@
 #include <juce_audio_utils/juce_audio_utils.h>
-#include <juce_audio_processors/format_types/juce_VST3PluginFormat.h>
 #include <atomic>
 #include <chrono>
 #include <cmath>
@@ -26,8 +25,12 @@ public:
         deviceManager.addAudioCallback(this);
         const auto deviceName = deviceManager.getCurrentAudioDevice()
             ? deviceManager.getCurrentAudioDevice()->getName() : String("unavailable");
-        send({ { "event", "ready" }, { "audioDevice", deviceName },
-               { "audioDeviceError", error }, { "vst3Enabled", JUCE_PLUGINHOST_VST3 != 0 } });
+        DynamicObject::Ptr ready(new DynamicObject());
+        ready->setProperty("event", "ready");
+        ready->setProperty("audioDevice", deviceName);
+        ready->setProperty("audioDeviceError", error);
+        ready->setProperty("vst3Enabled", JUCE_PLUGINHOST_VST3 != 0);
+        send(var(ready.get()));
     }
 
     ~NativeVstHost() override {
