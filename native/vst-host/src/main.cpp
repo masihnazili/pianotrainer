@@ -1,5 +1,5 @@
 #include <juce_audio_utils/juce_audio_utils.h>
-#include <juce_audio_processors/format/juce_AudioPluginFormatManagerHelpers.h>
+#include <juce_audio_processors/format_types/juce_VST3PluginFormat.h>
 #include <atomic>
 #include <chrono>
 #include <cmath>
@@ -21,7 +21,7 @@ struct ScheduledMidi {
 class NativeVstHost final : private AudioIODeviceCallback {
 public:
     NativeVstHost() {
-        addDefaultFormatsToManager(formats);
+        formats.addFormat(new VST3PluginFormat());
         const auto error = deviceManager.initialise(0, 2, nullptr, true);
         deviceManager.addAudioCallback(this);
         const auto deviceName = deviceManager.getCurrentAudioDevice()
