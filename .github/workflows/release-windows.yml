@@ -1,8 +1,11 @@
+
 name: Build Windows Installer
 
 on:
   push:
-    branches: [main, master]
+    branches:
+      - main
+      - master
   pull_request:
   workflow_dispatch:
 
@@ -11,38 +14,62 @@ permissions:
 
 jobs:
   windows-installer:
+    name: Build Piano Trainer for Windows
     runs-on: windows-2022
     timeout-minutes: 45
+
     steps:
+      # 1. دریافت سورس پروژه
       - name: Checkout source
         uses: actions/checkout@v4
 
+      # 2. نصب Node.js
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 22
 
+      # 3. نصب وابستگی‌های برنامه
       - name: Install JavaScript dependencies
         run: npm install --no-audit --no-fund
 
+      # 4. اجرای تست‌ها
       - name: Run application tests
         run: npm test
 
+      # 5. حذف CMake Cache قدیمی
+      - name: Clean stale CMake build directory
+        shell: pwsh
+        run: |
+          $buildDir = "native/vst-host/build"
+
+          if (Test-Path $buildDir) {
+            Remove-Item $buildDir -Recurse -Force
+          }
+
+      # 6. پیکربندی VST3 Host
       - name: Configure native VST3 host
         run: cmake -S native/vst-host -B native/vst-host/build -G "Visual Studio 17 2022" -A x64
 
+      # 7. کامپایل VST3 Host
       - name: Build native VST3 host
         run: cmake --build native/vst-host/build --config Release --parallel
 
+      # 8. بررسی وجود فایل اجرایی
       - name: Verify native executable exists
         shell: pwsh
         run: |
           $hostExe = "native/vst-host/build/Release/PianoVstHost.exe"
-          if (!(Test-Path $hostExe)) { throw "VST3 host executable was not produced: $hostExe" }
 
+          if (!(Test-Path $hostExe)) {
+            throw "VST3 host executable was not produced: $hostExe"
+          }
+
+      # 9. ساخت Installer ویندوز
       - name: Build Windows installer
         run: npm run dist:win
 
+      # 10. انتشار فایل نصب به‌عنوان Artifact
       - name: Upload installer
         uses: actions/upload-artifact@v4
         with:
